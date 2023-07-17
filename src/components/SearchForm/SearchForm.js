@@ -4,10 +4,11 @@ import "./SearchForm.css";
 import SearchIcon from "../../images/search-icon.svg";
 import SearchBtn from "../../images/search-btn.svg";
 
-function SearchForm({ searchMovie }) {
+function SearchForm({ searchMovie, isSavedMovies }) {
   const defaultValue = localStorage.getItem("searchedMovieName") || "";
   const [isChecked, setIsChecked] = useState(false);
-  const [movie, setMovie] = useState(defaultValue);
+  const [movie, setMovie] = useState(isSavedMovies ? "" : defaultValue);
+  const [error, setError] = useState("");
 
   function getLocalStorageData() {
     return JSON.parse(localStorage.getItem("shortsMovies"));
@@ -20,11 +21,16 @@ function SearchForm({ searchMovie }) {
 
   function handleChange(evt) {
     setMovie(evt.target.value);
+    setError("");
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    searchMovie(movie, isChecked);
+    if (movie.trim().length === 0) {
+      setError("Введите ключевое слово");
+    } else {
+      searchMovie(movie, isChecked);
+    }
   }
 
   useEffect(() => {
@@ -34,7 +40,7 @@ function SearchForm({ searchMovie }) {
 
   useEffect(() => {
     if (defaultValue) {
-      setMovie(defaultValue);
+      setMovie(isSavedMovies ? "" : defaultValue);
     }
   }, [defaultValue]);
 
@@ -50,9 +56,9 @@ function SearchForm({ searchMovie }) {
           className="search__form-input"
           type="text"
           placeholder="Фильм"
-          minLength="2"
-          maxLength="30"
-          required
+          // minLength="2"
+          // maxLength="30"
+          // required
           value={movie}
           onChange={handleChange}
         />
@@ -60,6 +66,7 @@ function SearchForm({ searchMovie }) {
           <img src={SearchBtn} alt="Найти" className="search__form-icon-find" />
         </button>
       </form>
+      {error ? <p className="search__form-error">{error}</p> : " "}
       <div className="switch-toggle__wrapper">
         <div className={`switch-toggle ${isChecked ? "checked" : ""}`}>
           <input

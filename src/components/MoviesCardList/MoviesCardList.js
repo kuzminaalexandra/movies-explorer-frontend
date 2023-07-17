@@ -2,7 +2,7 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList({ movies, loading, showMoreMovies }) {
+function MoviesCardList({ movies, loading, showMoreMovies, isSavedMovies }) {
   const foundsMovies = JSON.parse(localStorage.getItem("foundsMovies"));
 
   if (loading) return <Preloader />;
@@ -31,7 +31,7 @@ function MoviesCardList({ movies, loading, showMoreMovies }) {
     <section className="movies-card-list">
       <ul className="movies-card-list__cards">{movieListElement}</ul>
 
-      {movies.length < foundsMovies.length && (
+      {movies.length < foundsMovies.length && !isSavedMovies && (
         <div className="movies-card-list__more" onClick={showMoreMovies}>
           <button className="movies-card-list__more-btn">Ещё</button>
         </div>

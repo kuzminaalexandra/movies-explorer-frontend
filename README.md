@@ -6,5 +6,3 @@ Frontend https://diplom-kuzmina.nomoredomains.work
 IP  158.160.104.6
 
 Пулреквест https://github.com/kuzminaalexandra/movies-explorer-frontend/pull/2
-
-..

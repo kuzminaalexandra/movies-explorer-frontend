@@ -7,9 +7,12 @@ export function useApp() {
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [moreMovies, setMoreMovies] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [savedMovie, setSavedMovie] = useState([]);
+  const [isProfileUpdated, setIsProfileUpdated] = useState(false);
+  const [isProfileUpdatedFalse, setIsProfileUpdatedFalse] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,9 +38,13 @@ export function useApp() {
         .getUserInfo()
         .then((user) => {
           setCurrentUser(user);
+          setLoadingUser(false);
           getSavedMovies();
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          setLoadingUser(false);
+        });
     }
   }, []);
 
@@ -70,6 +77,9 @@ export function useApp() {
     setCurrentUser({});
     localStorage.removeItem("token");
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("searchedMovieName");
+    localStorage.removeItem("shortsMovies");
+    localStorage.removeItem("foundsMovies");
     navigate("/");
   }
 
@@ -78,8 +88,12 @@ export function useApp() {
       .setUserInfo(name, email)
       .then((newData) => {
         setCurrentUser(newData);
+        setIsProfileUpdated(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsProfileUpdatedFalse(false);
+      });
   }
 
   function handleSearchMovie(movie, isShort) {
@@ -115,10 +129,6 @@ export function useApp() {
     localStorage.setItem("foundsMovies", JSON.stringify(foundsMovies));
   }
 
-  function checkWindowWidth() {
-    setWindowWidth(window.innerWidth);
-  }
-
   const resizeWindow = useCallback(() => {
     const foundsMovies = getLocalStorageData();
 
@@ -126,17 +136,21 @@ export function useApp() {
       return;
     }
 
-    if (windowWidth > 900) {
-      setMovies(foundsMovies.slice(0, 7));
+    if (windowWidth >= 1280) {
+      setMovies(foundsMovies.slice(0, 12));
       setMoreMovies(3);
-    } else if (windowWidth > 490) {
-      setMovies(foundsMovies.slice(0, 7));
+    } else if (windowWidth > 490 && windowWidth < 1280) {
+      setMovies(foundsMovies.slice(0, 8));
       setMoreMovies(2);
-    } else if (windowWidth < 490) {
+    } else if (windowWidth <= 490) {
       setMovies(foundsMovies.slice(0, 5));
-      setMoreMovies(1);
+      setMoreMovies(2);
     }
   }, [windowWidth]);
+
+  function checkWindowWidth() {
+    setWindowWidth(window.innerWidth);
+  }
 
   useEffect(() => {
     window.addEventListener("resize", checkWindowWidth);
@@ -163,8 +177,8 @@ export function useApp() {
   function getSavedMovies() {
     localApi
       .getSavedMovies()
-      .then((movies) => {
-        setSavedMovie(movies);
+      .then((savedMovie) => {
+        setSavedMovie(savedMovie);
       })
       .catch((err) => {
         console.log(err.message);
@@ -208,6 +222,22 @@ export function useApp() {
       });
   }
 
+  useEffect(() => {
+    if (isProfileUpdated) {
+      const timer = setTimeout(() => {
+        setIsProfileUpdated(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+
+    if (isProfileUpdatedFalse) {
+      const timer = setTimeout(() => {
+        setIsProfileUpdatedFalse(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isProfileUpdated, isProfileUpdatedFalse]);
+
   return {
     handleRegister,
     handleLogin,
@@ -222,5 +252,8 @@ export function useApp() {
     saveMovie,
     deleteMovie,
     savedMovie,
+    loadingUser,
+    isProfileUpdated,
+    isProfileUpdatedFalse,
   };
 }

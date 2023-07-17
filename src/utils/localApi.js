@@ -2,19 +2,11 @@ export const BASE_URL = "https://api.diplom-kuzmina.nomoredomains.rocks";
 // export const BASE_URL = "http://localhost:3000";
 
 function handleRes(res) {
-  if (!res.ok) {
-    return res.json().then((message) => {
-      if (message && message.error) {
-        throw new Error(message.error);
-      }
-      if (message && message.message) {
-        throw new Error(message.message);
-      }
-      throw new Error("Unexpected error occurred");
-    });
+  if (res.ok) {
+    return res.json();
+  } else {
+    return Promise.reject(`Ошибка: ${res.status}`);
   }
-
-  return res.json();
 }
 
 export const checkToken = (token) => {

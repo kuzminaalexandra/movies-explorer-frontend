@@ -5,8 +5,8 @@ import logo from "../../images/logo.svg";
 import { useApp } from "../../hooks/App";
 
 function Register() {
-  const { handleRegister, loggedIn } = useApp();
-  const { values, handleChange, isValid } = useForms();
+  const { handleRegister } = useApp();
+  const { values, errors, handleChange, isValid } = useForms();
 
   function handleSubmit(evt) {
     if (isValid) {
@@ -14,6 +14,8 @@ function Register() {
       handleRegister(values);
     }
   }
+
+  const loggedIn = localStorage.getItem("loggedIn") === "true";
 
   if (loggedIn) {
     return <Navigate to="/" />;
@@ -31,7 +33,7 @@ function Register() {
         </Link>
         <h1 className="signup__page-title">Добро пожаловать!</h1>
       </div>
-      <form className="signup__form" noValidate onSubmit={handleSubmit}>
+      <form className="signup__form" onSubmit={handleSubmit}>
         <label className="signup__form-label">
           <span className="signup__form-text">Имя</span>
           <input
@@ -44,6 +46,9 @@ function Register() {
             value={values.name || ""}
             onChange={handleChange}
           />
+          {errors.name && (
+            <span className="signup__form-error">{errors.name}</span>
+          )}
         </label>
         <label className="signup__form-label">
           <span className="signup__form-text">E-mail</span>
@@ -57,6 +62,9 @@ function Register() {
             value={values.email || ""}
             onChange={handleChange}
           />
+          {errors.email && (
+            <span className="signup__form-error">{errors.email}</span>
+          )}
         </label>
         <label className="signup__form-label">
           <span className="signup__form-text">Пароль</span>
@@ -65,10 +73,15 @@ function Register() {
             type="password"
             name="password"
             autoComplete="off"
+            minLength="8"
+            maxLength="30"
             required
             value={values.password || ""}
             onChange={handleChange}
           />
+          {errors.password && (
+            <span className="signup__form-error">{errors.password}</span>
+          )}
         </label>
         <button
           type="submit"

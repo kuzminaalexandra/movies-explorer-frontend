@@ -88,6 +88,19 @@
   opacity: 0.7;
 }
 
+.search__form-error {
+  color: #ff4062;
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 30px;
+  height: 12px;
+}
+
 @media screen and (max-width: 900px) {
   .search__form {
     margin: 80px 30px 29px 30px;

@@ -9,18 +9,29 @@ export function useForms() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setValues((prevValues) => ({ ...prevValues, [name]: value }));
-
     let validationError = "";
 
     if (name === "email") {
       if (!validator.isEmail(value)) {
         validationError = "Некорректный формат email";
       }
+    } else if (name === "password") {
+      if (!validator.isLength(value, { min: 8, max: 30 })) {
+        validationError = "Пароль должен содержать от 8 до 30 символов";
+      }
+    } else if (name === "name") {
+      if (!validator.isLength(value, { min: 2, max: 30 })) {
+        validationError = "Имя должно содержать от 2 до 30 символов";
+      }
     }
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: validationError }));
-    setIsValid(e.target.closest("form").checkValidity());
+    setIsValid(
+      Object.values({ ...errors, [name]: validationError }).every(
+        (error) => !error
+      )
+    );
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
   const resetForm = useCallback(() => {

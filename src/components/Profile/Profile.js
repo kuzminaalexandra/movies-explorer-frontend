@@ -2,21 +2,33 @@ import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../../hooks/App";
 import { useForms } from "../../hooks/Forms";
+import Preloader from "../Preloader/Preloader";
 import CurrentUserContext from "../../context/CurrentUserContext";
 import "./Profile.css";
 
 function Profile() {
   const currentUser = useContext(CurrentUserContext);
-  const { handleUpdateUser, handleLogout } = useApp();
+  const {
+    handleUpdateUser,
+    handleLogout,
+    isProfileUpdated,
+    isProfileUpdatedFalse,
+  } = useApp();
   const { values, handleChange, isValid, setValues } = useForms();
 
   const [isEdit, setIsEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setValues({
-      name: currentUser.name,
-      email: currentUser.email,
-    });
+    if (!currentUser) {
+      setIsLoading(true);
+    } else {
+      setValues({
+        name: currentUser.name,
+        email: currentUser.email,
+      });
+      setIsLoading(false);
+    }
   }, [currentUser, setValues]);
 
   function handleEditBtnClick() {
@@ -30,6 +42,8 @@ function Profile() {
       setIsEdit(false);
     }
   }
+
+  if (isLoading) return <Preloader />;
 
   return (
     <>
@@ -67,6 +81,16 @@ function Profile() {
           </label>
         </form>
         <div className="profile__buttons-wrapper">
+          {isProfileUpdated && (
+            <p className="profile__update-message-success">
+              Профиль успешно обновлен
+            </p>
+          )}
+          {isProfileUpdatedFalse && (
+            <p className="profile__update-message-fail">
+              Не удалось обновить профиль
+            </p>
+          )}
           {isEdit ? (
             <Link
               to="/profile"

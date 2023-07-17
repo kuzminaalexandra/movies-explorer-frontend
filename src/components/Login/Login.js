@@ -5,7 +5,7 @@ import logo from "../../images/logo.svg";
 import { useApp } from "../../hooks/App";
 
 function Login() {
-  const { handleLogin, loggedIn } = useApp();
+  const { handleLogin } = useApp();
   const { values, handleChange, isValid } = useForms();
 
   function handleSubmit(evt) {
@@ -14,6 +14,8 @@ function Login() {
       handleLogin(values);
     }
   }
+
+  const loggedIn = localStorage.getItem("loggedIn") === "true";
 
   if (loggedIn) {
     return <Navigate to="/" />;
