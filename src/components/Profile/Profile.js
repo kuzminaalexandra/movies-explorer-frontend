@@ -97,7 +97,11 @@ function Profile() {
               type="submit"
               className="profile__btn-save"
               onClick={handleSaveBtnClick}
-              disabled={!isValid}
+              disabled={
+                !isValid ||
+                (currentUser.name === values.name &&
+                  currentUser.email === values.email)
+              }
             >
               Сохранить
             </Link>
