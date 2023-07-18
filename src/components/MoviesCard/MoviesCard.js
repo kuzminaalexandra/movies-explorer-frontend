@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useApp } from "../../hooks/App";
 import likeIconActive from "../../images/like-icon-active.svg";
 import likeIcon from "../../images/like-icon.svg";
@@ -10,6 +10,7 @@ function MoviesCard({ movie }) {
   const { isSavedMovie, saveMovie, deleteMovie } = useApp();
   const location = useLocation();
   const [isHidden, setIsHidden] = useState(false);
+
   const imageUrl =
     location.pathname === "/movies"
       ? `https://api.nomoreparties.co/${movie.image.url}`
@@ -29,7 +30,7 @@ function MoviesCard({ movie }) {
   };
 
   if (isHidden) {
-    return null; // Скрываем удаленный фильм
+    return null;
   }
 
   return (
@@ -61,7 +62,9 @@ function MoviesCard({ movie }) {
         )}
       </div>
 
-      <img src={imageUrl} alt={movie.nameRU} className="card__image" />
+      <Link to={movie.trailerLink}>
+        <img src={imageUrl} alt={movie.nameRU} className="card__image" />
+      </Link>
     </div>
   );
 }

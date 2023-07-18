@@ -6,7 +6,7 @@ import { useApp } from "../../hooks/App";
 
 function Login() {
   const { handleLogin } = useApp();
-  const { values, handleChange, isValid } = useForms();
+  const { values, handleChange, errors, isValid } = useForms();
 
   function handleSubmit(evt) {
     if (isValid) {
@@ -46,6 +46,9 @@ function Login() {
             value={values.email || ""}
             onChange={handleChange}
           />
+          {errors.email && (
+            <span className="signup__form-error">{errors.email}</span>
+          )}
         </label>
         <label className="signin__form-label">
           <span className="signin__form-text">Пароль</span>
@@ -54,10 +57,15 @@ function Login() {
             type="password"
             name="password"
             autoComplete="off"
+            minLength="8"
+            maxLength="30"
             required
             value={values.password || ""}
             onChange={handleChange}
           />
+          {errors.password && (
+            <span className="signup__form-error">{errors.password}</span>
+          )}
         </label>
         <button
           type="submit"

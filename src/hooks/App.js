@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import * as localApi from "../utils/localApi";
-import api from "../utils/api";
+import * as localApi from "../utils/MainApi";
+import api from "../utils/MoviesApi";
 
 export function useApp() {
   const [currentUser, setCurrentUser] = useState({});
@@ -13,40 +13,44 @@ export function useApp() {
   const [savedMovie, setSavedMovie] = useState([]);
   const [isProfileUpdated, setIsProfileUpdated] = useState(false);
   const [isProfileUpdatedFalse, setIsProfileUpdatedFalse] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const tokenCheck = useCallback(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       localApi
         .checkToken(token)
         .then(() => {
+          setLoggedIn(true);
           localStorage.setItem("loggedIn", true);
         })
         .catch((err) => {
-          console.log(err);
+          setLoggedIn(false);
           localStorage.setItem("loggedIn", false);
+          console.log(err);
         });
+    } else {
+      setLoggedIn(false);
     }
   }, [navigate]);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    tokenCheck();
     if (loggedIn) {
-      localApi
-        .getUserInfo()
-        .then((user) => {
+      Promise.all([localApi.getSavedMovies(), localApi.getUserInfo()])
+        .then(([movies, user]) => {
+          setSavedMovie(movies);
           setCurrentUser(user);
           setLoadingUser(false);
-          getSavedMovies();
         })
-        .catch((error) => {
-          console.log(error);
-          setLoadingUser(false);
+        .catch((err) => {
+          console.log(err);
         });
     }
-  }, []);
+  }, [loggedIn, tokenCheck]);
 
   function handleRegister({ name, email, password }) {
     localApi
@@ -64,13 +68,13 @@ export function useApp() {
       .then((data) => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("loggedIn", true);
-        localApi.getUserInfo().then((user) => {
-          setCurrentUser(user);
-          getSavedMovies();
-        });
+        setLoggedIn(true);
         navigate("/movies");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setLoggedIn(false);
+      });
   }
 
   function handleLogout() {
@@ -144,7 +148,7 @@ export function useApp() {
       setMoreMovies(2);
     } else if (windowWidth <= 490) {
       setMovies(foundsMovies.slice(0, 5));
-      setMoreMovies(2);
+      setMoreMovies(1);
     }
   }, [windowWidth]);
 
@@ -174,17 +178,6 @@ export function useApp() {
     setMovies(foundsMovies.slice(0, movies.length + moreMovies));
   }
 
-  function getSavedMovies() {
-    localApi
-      .getSavedMovies()
-      .then((savedMovie) => {
-        setSavedMovie(savedMovie);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }
-
   function isSavedMovie(card) {
     return savedMovie.some(
       (c) => c.movieId === card.id && c.owner._id === currentUser._id
@@ -197,7 +190,11 @@ export function useApp() {
       .then((movieData) => {
         setSavedMovie((prevMovies) => [...prevMovies, movieData]);
       })
-      .then(() => getSavedMovies())
+      .then(() => {
+        localApi.getSavedMovies().then((movies) => {
+          setSavedMovie(movies);
+        });
+      })
       .catch((err) => {
         console.log(err);
       });
