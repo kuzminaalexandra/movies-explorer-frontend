@@ -141,14 +141,17 @@ export function useApp() {
     }
 
     if (windowWidth >= 1280) {
-      setMovies(foundsMovies.slice(0, 12));
-      setMoreMovies(3);
+      setMovies(foundsMovies.slice(0, 7));
+      setMoreMovies(7);
     } else if (windowWidth > 490 && windowWidth < 1280) {
-      setMovies(foundsMovies.slice(0, 8));
-      setMoreMovies(2);
+      // Отображение как в макете = 7
+      setMovies(foundsMovies.slice(0, 7));
+      // Планшет = мобильное устройство
+      // На мобильной версии всегда загружается 5 карточек по 1 в ряд.
+      setMoreMovies(5);
     } else if (windowWidth <= 490) {
       setMovies(foundsMovies.slice(0, 5));
-      setMoreMovies(1);
+      setMoreMovies(5);
     }
   }, [windowWidth]);
 
