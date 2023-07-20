@@ -1,0 +1,183 @@
+.signup__header {
+  width: 396px;
+  margin: 0 auto;
+}
+
+.signup__header-logo {
+  margin-top: 70px;
+}
+
+.signup__page-title {
+  color: #000;
+  font-size: 24px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  margin-top: 37px;
+  margin-bottom: 40px;
+}
+
+.signup__form {
+  width: 396px;
+  display: grid;
+  margin: 0 auto;
+}
+
+.signup__form-text {
+  color: #a0a0a0;
+  font-size: 10px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 390px;
+}
+
+.signup__form-label {
+  display: grid;
+}
+
+.signup__form-input {
+  border: none;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #000;
+  font-size: 14px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 24px;
+}
+.signup__form-input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #000;
+}
+
+.signup__form-signup-btn {
+  border-radius: 3px;
+  background: #000;
+  width: 396px;
+  height: 45px;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: none;
+  padding: 0;
+  margin-top: 128px;
+  cursor: pointer;
+}
+
+.signup__form-signup-btn[disabled] {
+  cursor: default;
+  background: #ccc;
+}
+
+.signup__form-question {
+  color: #a0a0a0;
+  text-align: center;
+  font-size: 14px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+  margin: 0;
+  margin-top: 16px;
+}
+
+.signup__form-signup-link {
+  color: #000;
+  text-align: center;
+  font-size: 14px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  margin-left: 6px;
+}
+
+.signup__form-error {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff4062;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 490px) {
+  .signup__header {
+    width: 260px;
+    margin: 0 auto;
+  }
+
+  .signup__header-logo {
+    margin: 70px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .signup__page-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 80px;
+  }
+
+  .signup__form {
+    width: 260px;
+  }
+
+  .signup__form-text {
+    width: 260px;
+  }
+
+  .signup__form-input {
+    width: 260px;
+  }
+
+  .signup__form-signup-btn {
+    width: 260px;
+    margin-top: 216px;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .signup__form-question {
+    color: #a0a0a0;
+    text-align: center;
+    font-size: 12px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .signup__form-signup-link {
+    color: #000;
+    text-align: center;
+    font-size: 12px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 14px;
+  }
+}

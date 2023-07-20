@@ -1,0 +1,142 @@
+.search__form {
+  display: flex;
+  margin: 64px 70px 29px 70px;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.search__form-input {
+  color: #a0a0a0;
+  text-align: center;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin-left: 33px;
+}
+
+.search__form:focus-within {
+  border-color: #000;
+}
+
+.search__form-btn {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.switch-toggle__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 49px;
+}
+
+.switch-toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background-color: #a0a0a0;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.switch-toggle.checked {
+  background-color: #2be080;
+}
+
+.switch-toggle__input {
+  display: none;
+}
+
+.switch-toggle__label {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s ease-out;
+  cursor: pointer;
+}
+
+.switch-toggle.checked .switch-toggle__label {
+  transform: translateX(16px);
+}
+
+.switch-toggle__text {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  margin-left: 12px;
+}
+
+.search__form-icon-find {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+.search__form-icon-find:hover {
+  opacity: 0.7;
+}
+
+.search__form-error {
+  color: #ff4062;
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 30px;
+  height: 12px;
+}
+
+@media screen and (max-width: 900px) {
+  .search__form {
+    margin: 80px 30px 29px 30px;
+  }
+  .search__form-input {
+    width: 94px;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .search__form {
+    margin: 91px 14px 42px 14px;
+  }
+
+  .search__form-icon {
+    display: none;
+  }
+
+  .search__form-input {
+    margin-left: 0;
+    text-align: left;
+    width: 60px;
+    color: #a0a0a0;
+    font-size: 18px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .switch-toggle__text {
+    color: #000;
+    font-size: 11px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+  }
+}
